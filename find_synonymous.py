@@ -42,9 +42,13 @@ if __name__ == '__main__':
         f = open(vcf,"r")
         lines = [i.strip().split("\t") for i in f.readlines()]
         f.close()
-        if lines[0][0].startswith("##fileformat"):
+        if lines[0][0].startswith("#"):
             # This is a vcf file
-            vcf_content = lines[24:]
+            vcf_content = []
+            n = 0
+            while lines[i][0] != '#CHROM':
+                n += 1
+            vcf_content = lines[n+1:]
             gene_ids = [i[0] for i in vcf_content]
             positions = [int(i[1])-1 for i in vcf_content]
             refs = [i[3] for i in vcf_content]
