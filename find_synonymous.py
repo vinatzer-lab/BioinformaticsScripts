@@ -46,7 +46,7 @@ if __name__ == '__main__':
             # This is a vcf file
             vcf_content = []
             n = 0
-            while lines[i][0] != '#CHROM':
+            while lines[n][0] != '#CHROM':
                 n += 1
             vcf_content = lines[n+1:]
             gene_ids = [i[0] for i in vcf_content]
