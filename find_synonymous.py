@@ -38,6 +38,8 @@ if __name__ == '__main__':
             output = args.output
         if args.df:
             df = pd.read_table(args.df,sep=",",header=0,index_col=1)
+        else:
+            df = None
         records = SeqIO.index(cds,"fasta")
         f = open(vcf,"r")
         lines = [i.strip().split("\t") for i in f.readlines()]
