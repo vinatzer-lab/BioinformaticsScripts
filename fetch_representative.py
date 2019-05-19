@@ -68,13 +68,13 @@ def get_rep_subLINgroup(distinct_sub,c):
         except:
             recycle.append(i)
     for i in recycle:
-        c.execute("SELECT Genome.Genome_ID,LIN.LIN,Genome.FilePath,Taxonomy.NCBI_Tax_ID FROM Genome "
+        c.execute("SELECT Genome.Genome_ID,LIN.LIN,Genome.FilePath FROM Genome "
                   "JOIN LIN ON Genome.Genome_ID=LIN.Genome_ID "
                   "JOIN Taxonomy ON Genome.Genome_ID=Taxonomy.Genome_ID "
                   "WHERE LIN.LIN LIKE '{0},%'"
                   "LIMIT 1".format(i))
         tmp = c.fetchone()
-        [genome_id, lin, filepath, tax_id] = tmp
+        [genome_id, lin, filepath] = tmp
         Genome_ID.append(genome_id)
         LIN.append(lin)
         FilePath.append(filepath)
