@@ -67,6 +67,7 @@ def get_rep_subLINgroup(distinct_sub,c):
             NCBI_Tax_ID.append(tax_id)
         except:
             recycle.append(i)
+    print(recycle)
     for i in recycle:
         c.execute("SELECT Genome.Genome_ID,LIN.LIN,Genome.FilePath FROM Genome "
                   "JOIN LIN ON Genome.Genome_ID=LIN.Genome_ID "
