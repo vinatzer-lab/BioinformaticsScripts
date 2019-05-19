@@ -32,7 +32,7 @@ def connect_to_db():
 def get_LINgroup(LINgroup,c):
     c.execute("SELECT LIN FROM LIN WHERE LIN LIKE '{0},%'".format(LINgroup))
     tmp = c.fetchall()
-    LIN = [i[0] for i in tmp]
+    LIN = [i[0].split(",") for i in tmp]
     return LIN
 
 def get_subLINgroup(LIN,position):
