@@ -19,6 +19,7 @@ def get_parsed_args():
         """)
     parser.add_argument("-l", dest='LINgroup', help="A parent LINgorup")
     parser.add_argument("-x", dest='position', help="A LIN position")
+    parser.add_argument("-o", dest="output", help="Output file name")
     args = parser.parse_args()
     return args
 
@@ -29,19 +30,15 @@ def connect_to_db():
     return conn, c
 
 def get_LINgroup(LINgroup,c):
-    c.execute("SELECT Genome_ID,LIN FROM LIN WHERE LIN LIKE '{0},%'".format(LINgroup))
+    c.execute("SELECT LIN FROM LIN WHERE LIN LIKE '{0},%'".format(LINgroup))
     tmp = c.fetchall()
-    Genome_ID = [int(i[0]) for i in tmp]
-    LIN = [i[1] for i in tmp]
-    df = pd.DataFrame()
-    df["LIN"] = [lin.split(",") for lin in LIN]
-    df.index = Genome_ID
-    return df
+    LIN = [i[0] for i in tmp]
+    return LIN
 
-def get_subLINgroup(df,position):
+def get_subLINgroup(LIN,position):
     positions = string.ascii_uppercase[:20]
     idx = positions.index(position.upper())
-    sub = [",".join(i[:idx+1]) for i in df['LIN']]
+    sub = [",".join(i[:idx+1]) for i in LIN]
     distinct_sub = list(set(sub))
     return distinct_sub
 
@@ -89,6 +86,14 @@ def get_rep_subLINgroup(distinct_sub,c):
     return df
 
 
-
-
 # MAIN
+if __name__ == '__main__':
+    args = get_parsed_args()
+    LINgroup = args.LINgroup
+    position = args.position
+    output = args.output
+    conn, c = connect_to_db()
+    LIN = get_LINgroup(LINgroup,c)
+    distinct_sub = get_subLINgroup(LIN, position)
+    df = get_rep_subLINgroup(distinct_sub,c)
+    df.to_csv(output, sep="\t")
